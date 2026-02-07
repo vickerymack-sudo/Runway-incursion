@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Runway Incursion Avoidance Simulator</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="app">
+    <header>
+      <h1>Runway Incursion Avoidance Simulator</h1>
+      <p class="subtitle">AO 2 Task C (CFI ACS, Single Engine) — Taxiing, signage ID, and incursion avoidance.</p>
+    </header>
+
+    <section class="panel">
+      <h2>Scenario Setup</h2>
+      <div class="scenario-grid">
+        <label class="field">
+          <span>Airport Environment</span>
+          <select id="airportSelect">
+            <option value="day_vfr">Day VFR, Class D</option>
+            <option value="night_vfr">Night VFR, Class D</option>
+            <option value="imc">IMC, Class C</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>Taxi Clearance Type</span>
+          <select id="clearanceSelect">
+            <option value="to_runway">Taxi to Runway 27</option>
+            <option value="via_alpha">Taxi to Runway 27 via Alpha, hold short Runway 18</option>
+            <option value="progressive">Progressive taxi instructions requested</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>Training Focus</span>
+          <select id="focusSelect">
+            <option value="signs">Taxiway Sign Identification</option>
+            <option value="incursion">Incursion Avoidance Decisions</option>
+            <option value="mixed">Mixed Skills</option>
+          </select>
+        </label>
+      </div>
+      <div class="actions">
+        <button id="startBtn">Start Scenario</button>
+        <button id="resetBtn" class="secondary">Reset</button>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Airport Diagram (Simplified)</h2>
+      <div class="diagram" aria-label="Simplified airport diagram">
+        <div class="runway">Runway 27/09</div>
+        <div class="taxiway alpha">Taxiway A</div>
+        <div class="taxiway bravo">Taxiway B</div>
+        <div class="taxiway charlie">Taxiway C</div>
+        <div class="hold-short">Hold Short Line</div>
+        <div class="runway-secondary">Runway 18/36</div>
+      </div>
+      <p class="hint">Use the taxi options to move between ramp, intersections, and hold short points.</p>
+    </section>
+
+    <section class="panel" id="interactionPanel">
+      <h2>Taxi Decision Log</h2>
+      <div id="status" class="status">Select a scenario and start to begin taxiing.</div>
+      <div class="location">
+        <span>Current Location:</span>
+        <strong id="locationDisplay">Ramp</strong>
+      </div>
+      <div class="options" id="options"></div>
+      <div class="sign-id">
+        <p><strong>Sign Check:</strong> Identify the sign shown before crossing any runway or hold short line.</p>
+        <div id="signPrompt" class="sign">Sign will appear here.</div>
+        <div class="sign-actions" id="signActions"></div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Incursion Avoidance Reminders</h2>
+      <ul>
+        <li>Use a proper taxi briefing and read back all hold short instructions.</li>
+        <li>Verify location with signage and airport markings before crossing any runway.</li>
+        <li>When in doubt, stop the aircraft and request progressive taxi or clarification.</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <p>Practice scenario designed to align with CFI ACS AO 2 Task C objectives.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
