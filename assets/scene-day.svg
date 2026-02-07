@@ -1,0 +1,16 @@
+<svg width="960" height="420" viewBox="0 0 960 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Daytime runway environment">
+  <rect width="960" height="420" fill="#bfdbfe"/>
+  <rect y="250" width="960" height="170" fill="#22c55e"/>
+  <rect y="260" width="960" height="140" fill="#16a34a" opacity="0.6"/>
+  <rect x="120" y="180" width="720" height="90" fill="#374151"/>
+  <rect x="140" y="220" width="680" height="6" fill="#fbbf24"/>
+  <rect x="440" y="200" width="80" height="35" fill="#f8fafc"/>
+  <text x="480" y="224" text-anchor="middle" font-family="Arial" font-size="20" fill="#1f2937">27</text>
+  <rect x="40" y="290" width="220" height="60" fill="#1d4ed8" rx="8"/>
+  <text x="150" y="325" text-anchor="middle" font-family="Arial" font-size="18" fill="#f8fafc">Taxiway A</text>
+  <rect x="700" y="300" width="210" height="55" fill="#f59e0b" rx="8"/>
+  <text x="805" y="335" text-anchor="middle" font-family="Arial" font-size="16" fill="#1f2937">Hold Short</text>
+  <circle cx="820" cy="90" r="35" fill="#facc15"/>
+  <circle cx="750" cy="110" r="18" fill="#f8fafc" opacity="0.8"/>
+  <circle cx="770" cy="90" r="24" fill="#f8fafc" opacity="0.8"/>
+</svg>
