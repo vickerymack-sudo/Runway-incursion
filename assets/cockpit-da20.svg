@@ -1,0 +1,13 @@
+<svg width="960" height="420" viewBox="0 0 960 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="DA20 cockpit perspective">
+  <rect width="960" height="420" fill="#0b1120"/>
+  <rect y="40" width="960" height="220" fill="#1e293b"/>
+  <rect x="80" y="80" width="240" height="140" rx="16" fill="#0f172a" stroke="#64748b" stroke-width="4"/>
+  <rect x="360" y="80" width="240" height="140" rx="16" fill="#0f172a" stroke="#64748b" stroke-width="4"/>
+  <rect x="640" y="80" width="240" height="140" rx="16" fill="#0f172a" stroke="#64748b" stroke-width="4"/>
+  <circle cx="200" cy="150" r="45" fill="#0b1120" stroke="#38bdf8" stroke-width="6"/>
+  <circle cx="480" cy="150" r="45" fill="#0b1120" stroke="#f97316" stroke-width="6"/>
+  <circle cx="760" cy="150" r="45" fill="#0b1120" stroke="#22c55e" stroke-width="6"/>
+  <rect y="260" width="960" height="160" fill="#334155"/>
+  <rect x="160" y="275" width="640" height="110" rx="18" fill="#111827"/>
+  <text x="480" y="330" text-anchor="middle" font-family="Arial" font-size="24" fill="#e2e8f0">DA20 Classic Cockpit View</text>
+</svg>
