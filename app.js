@@ -1,26 +1,27 @@
-const startBtn = document.getElementById("startBtn");
-const resetBtn = document.getElementById("resetBtn");
-const statusEl = document.getElementById("status");
-const locationDisplay = document.getElementById("locationDisplay");
-const optionsEl = document.getElementById("options");
-const signPrompt = document.getElementById("signPrompt");
-const signActions = document.getElementById("signActions");
-const signImage = document.getElementById("signImage");
-const sceneImage = document.getElementById("sceneImage");
-const sceneCaption = document.getElementById("sceneCaption");
-const scoreDisplay = document.getElementById("scoreDisplay");
-const logEntries = document.getElementById("logEntries");
-const callouts = document.getElementById("callouts");
-const cockpitImage = document.getElementById("cockpitImage");
-const cockpitCaption = document.getElementById("cockpitCaption");
-const da40ScenarioBtn = document.getElementById("da40ScenarioBtn");
-const da20ScenarioBtn = document.getElementById("da20ScenarioBtn");
-const nextStepBtn = document.getElementById("nextStepBtn");
+let startBtn;
+let resetBtn;
+let statusEl;
+let locationDisplay;
+let optionsEl;
+let signPrompt;
+let signActions;
+let signImage;
+let sceneImage;
+let sceneCaption;
+let scoreDisplay;
+let logEntries;
+let callouts;
+let cockpitImage;
+let cockpitCaption;
+let da40ScenarioBtn;
+let da20ScenarioBtn;
+let nextStepBtn;
+let jsStatus;
 
-const airportSelect = document.getElementById("airportSelect");
-const clearanceSelect = document.getElementById("clearanceSelect");
-const focusSelect = document.getElementById("focusSelect");
-const aircraftSelect = document.getElementById("aircraftSelect");
+let airportSelect;
+let clearanceSelect;
+let focusSelect;
+let aircraftSelect;
 
 const airportNodes = {
   Ramp: {
@@ -220,41 +221,56 @@ let score = 0;
 let guidedActive = false;
 let currentGuidedScenario = null;
 let currentStepIndex = 0;
+const AUTO_START_ON_LOAD = true;
 
 const updateStatus = (message) => {
+  if (!statusEl) return;
   statusEl.textContent = message;
 };
 
 const updateLocation = (location) => {
+  if (!locationDisplay) return;
   locationDisplay.textContent = location;
 };
 
 const updateScore = (delta) => {
   score += delta;
-  scoreDisplay.textContent = score;
+  if (scoreDisplay) {
+    scoreDisplay.textContent = score;
+  }
 };
 
 const addLogEntry = (message) => {
+  if (!logEntries) return;
   const entry = document.createElement("li");
   entry.textContent = message;
-  logEntries.prepend(entry);
+  if (typeof logEntries.prepend === "function") {
+    logEntries.prepend(entry);
+  } else {
+    logEntries.insertBefore(entry, logEntries.firstChild);
+  }
 };
 
 const updateScene = () => {
+  if (!sceneImage || !sceneCaption || !airportSelect) return;
   const scene = sceneData[airportSelect.value];
+  if (!scene) return;
   sceneImage.src = scene.src;
   sceneImage.alt = scene.caption;
   sceneCaption.textContent = scene.caption;
 };
 
 const updateAircraft = () => {
+  if (!cockpitImage || !cockpitCaption || !aircraftSelect) return;
   const aircraft = aircraftData[aircraftSelect.value];
+  if (!aircraft) return;
   cockpitImage.src = aircraft.src;
   cockpitImage.alt = aircraft.caption;
   cockpitCaption.textContent = aircraft.caption;
 };
 
 const updateCallouts = () => {
+  if (!callouts || !focusSelect) return;
   callouts.innerHTML = "";
   const focus = focusSelect.value;
   const focusMessages = {
@@ -281,6 +297,7 @@ const updateCallouts = () => {
 };
 
 const renderOptions = (location) => {
+  if (!optionsEl) return;
   optionsEl.innerHTML = "";
   if (guidedActive) {
     const note = document.createElement("div");
@@ -301,6 +318,7 @@ const renderOptions = (location) => {
 };
 
 const renderSignPrompt = (location) => {
+  if (!signActions || !signPrompt || !signImage) return;
   signActions.innerHTML = "";
   const node = airportNodes[location];
   if (!node || !node.sign) {
@@ -312,8 +330,10 @@ const renderSignPrompt = (location) => {
 
   signPrompt.textContent = node.sign.text;
   const asset = signAssets[node.sign.answer];
-  signImage.src = asset.src;
-  signImage.alt = asset.label;
+  if (asset) {
+    signImage.src = asset.src;
+    signImage.alt = asset.label;
+  }
   signOptions.forEach((option) => {
     const button = document.createElement("button");
     button.textContent = option.label;
@@ -353,6 +373,7 @@ const handleMove = (option) => {
 };
 
 const updateRunwayClearance = (next) => {
+  if (!clearanceSelect) return true;
   const clearance = clearanceSelect.value;
   if (clearance === "to_runway") {
     return true;
@@ -371,11 +392,17 @@ const startScenario = () => {
   guidedActive = false;
   currentGuidedScenario = null;
   currentStepIndex = 0;
-  nextStepBtn.disabled = true;
+  if (nextStepBtn) {
+    nextStepBtn.disabled = true;
+  }
   currentLocation = "Ramp";
   score = 0;
-  scoreDisplay.textContent = score;
-  logEntries.innerHTML = "";
+  if (scoreDisplay) {
+    scoreDisplay.textContent = score;
+  }
+  if (logEntries) {
+    logEntries.innerHTML = "";
+  }
   updateLocation(currentLocation);
   renderOptions(currentLocation);
   renderSignPrompt(currentLocation);
@@ -383,12 +410,14 @@ const startScenario = () => {
   updateCallouts();
   updateAircraft();
 
-  const airport = airportSelect.options[airportSelect.selectedIndex].textContent;
-  const clearance = clearanceSelect.options[clearanceSelect.selectedIndex].textContent;
-  const focus = focusSelect.options[focusSelect.selectedIndex].textContent;
-  updateStatus(`Scenario active: ${airport}. Clearance: ${clearance}. Focus: ${focus}.`);
-  addLogEntry(`Scenario started: ${airport}.`);
-  addLogEntry(`Clearance: ${clearance}.`);
+  if (airportSelect && clearanceSelect && focusSelect) {
+    const airport = airportSelect.options[airportSelect.selectedIndex].textContent;
+    const clearance = clearanceSelect.options[clearanceSelect.selectedIndex].textContent;
+    const focus = focusSelect.options[focusSelect.selectedIndex].textContent;
+    updateStatus(`Scenario active: ${airport}. Clearance: ${clearance}. Focus: ${focus}.`);
+    addLogEntry(`Scenario started: ${airport}.`);
+    addLogEntry(`Clearance: ${clearance}.`);
+  }
 };
 
 const startGuidedScenario = (scenarioKey) => {
@@ -399,16 +428,30 @@ const startGuidedScenario = (scenarioKey) => {
   guidedActive = true;
   currentGuidedScenario = scenario;
   currentStepIndex = 0;
-  nextStepBtn.disabled = false;
+  if (nextStepBtn) {
+    nextStepBtn.disabled = false;
+  }
 
-  aircraftSelect.value = scenario.aircraft;
-  airportSelect.value = scenario.airport;
-  clearanceSelect.value = scenario.clearance;
-  focusSelect.value = scenario.focus;
+  if (aircraftSelect) {
+    aircraftSelect.value = scenario.aircraft;
+  }
+  if (airportSelect) {
+    airportSelect.value = scenario.airport;
+  }
+  if (clearanceSelect) {
+    clearanceSelect.value = scenario.clearance;
+  }
+  if (focusSelect) {
+    focusSelect.value = scenario.focus;
+  }
 
   score = 0;
-  scoreDisplay.textContent = score;
-  logEntries.innerHTML = "";
+  if (scoreDisplay) {
+    scoreDisplay.textContent = score;
+  }
+  if (logEntries) {
+    logEntries.innerHTML = "";
+  }
   updateScene();
   updateCallouts();
   updateAircraft();
@@ -422,7 +465,9 @@ const runGuidedStep = () => {
   const step = currentGuidedScenario.steps[currentStepIndex];
   if (!step) {
     updateStatus("Scenario complete. Debrief and review your taxi performance.");
-    nextStepBtn.disabled = true;
+    if (nextStepBtn) {
+      nextStepBtn.disabled = true;
+    }
     addLogEntry("Scenario complete.");
     guidedActive = false;
     return;
@@ -450,30 +495,109 @@ const resetScenario = () => {
   guidedActive = false;
   currentGuidedScenario = null;
   currentStepIndex = 0;
-  nextStepBtn.disabled = true;
+  if (nextStepBtn) {
+    nextStepBtn.disabled = true;
+  }
   currentLocation = "Ramp";
   score = 0;
-  scoreDisplay.textContent = score;
+  if (scoreDisplay) {
+    scoreDisplay.textContent = score;
+  }
   updateLocation(currentLocation);
-  optionsEl.innerHTML = "";
-  signActions.innerHTML = "";
-  signPrompt.textContent = "Sign will appear here.";
-  signImage.src = "assets/sign-location.svg";
-  signImage.alt = "Taxiway sign";
-  logEntries.innerHTML = "";
-  callouts.innerHTML = "";
+  if (optionsEl) {
+    optionsEl.innerHTML = "";
+  }
+  if (signActions) {
+    signActions.innerHTML = "";
+  }
+  if (signPrompt) {
+    signPrompt.textContent = "Sign will appear here.";
+  }
+  if (signImage) {
+    signImage.src = "assets/sign-location.svg";
+    signImage.alt = "Taxiway sign";
+  }
+  if (logEntries) {
+    logEntries.innerHTML = "";
+  }
+  if (callouts) {
+    callouts.innerHTML = "";
+  }
   updateStatus("Select a scenario and start to begin taxiing.");
 };
 
-startBtn.addEventListener("click", startScenario);
-resetBtn.addEventListener("click", resetScenario);
-airportSelect.addEventListener("change", updateScene);
-focusSelect.addEventListener("change", updateCallouts);
-aircraftSelect.addEventListener("change", updateAircraft);
-da40ScenarioBtn.addEventListener("click", () => startGuidedScenario("da40Standard"));
-da20ScenarioBtn.addEventListener("click", () => startGuidedScenario("da20Progressive"));
-nextStepBtn.addEventListener("click", advanceGuidedStep);
+const initSimulator = () => {
+  startBtn = document.getElementById("startBtn");
+  resetBtn = document.getElementById("resetBtn");
+  statusEl = document.getElementById("status");
+  locationDisplay = document.getElementById("locationDisplay");
+  optionsEl = document.getElementById("options");
+  signPrompt = document.getElementById("signPrompt");
+  signActions = document.getElementById("signActions");
+  signImage = document.getElementById("signImage");
+  sceneImage = document.getElementById("sceneImage");
+  sceneCaption = document.getElementById("sceneCaption");
+  scoreDisplay = document.getElementById("scoreDisplay");
+  logEntries = document.getElementById("logEntries");
+  callouts = document.getElementById("callouts");
+  cockpitImage = document.getElementById("cockpitImage");
+  cockpitCaption = document.getElementById("cockpitCaption");
+  da40ScenarioBtn = document.getElementById("da40ScenarioBtn");
+  da20ScenarioBtn = document.getElementById("da20ScenarioBtn");
+  nextStepBtn = document.getElementById("nextStepBtn");
+  jsStatus = document.getElementById("jsStatus");
 
-updateScene();
-updateCallouts();
-updateAircraft();
+  airportSelect = document.getElementById("airportSelect");
+  clearanceSelect = document.getElementById("clearanceSelect");
+  focusSelect = document.getElementById("focusSelect");
+  aircraftSelect = document.getElementById("aircraftSelect");
+
+  if (startBtn) {
+    startBtn.addEventListener("click", startScenario);
+  }
+  if (resetBtn) {
+    resetBtn.addEventListener("click", resetScenario);
+  }
+  if (airportSelect) {
+    airportSelect.addEventListener("change", updateScene);
+  }
+  if (focusSelect) {
+    focusSelect.addEventListener("change", updateCallouts);
+  }
+  if (aircraftSelect) {
+    aircraftSelect.addEventListener("change", updateAircraft);
+  }
+  if (da40ScenarioBtn) {
+    da40ScenarioBtn.addEventListener("click", () => startGuidedScenario("da40Standard"));
+  }
+  if (da20ScenarioBtn) {
+    da20ScenarioBtn.addEventListener("click", () => startGuidedScenario("da20Progressive"));
+  }
+  if (nextStepBtn) {
+    nextStepBtn.addEventListener("click", advanceGuidedStep);
+  }
+
+  updateScene();
+  updateCallouts();
+  updateAircraft();
+  updateStatus("Ready. Choose a scenario and click Start Scenario to begin.");
+  if (jsStatus) {
+    jsStatus.textContent = "Simulator status: active";
+    jsStatus.classList.add("ready");
+  }
+  if (AUTO_START_ON_LOAD) {
+    startScenario();
+  }
+};
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initSimulator);
+} else {
+  initSimulator();
+}
+
+window.addEventListener("error", () => {
+  if (!jsStatus) return;
+  jsStatus.textContent = "Simulator status: error (check console)";
+  jsStatus.classList.add("error");
+});

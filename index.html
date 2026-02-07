@@ -11,6 +11,7 @@
     <header>
       <h1>Runway Incursion Avoidance Simulator</h1>
       <p class="subtitle">AO 2 Task C (CFI ACS, Single Engine) — Taxiing, signage ID, and incursion avoidance.</p>
+      <p class="runtime-status" id="jsStatus">Simulator status: loading…</p>
     </header>
 
     <section class="panel">
@@ -49,8 +50,18 @@
         </label>
       </div>
       <div class="actions">
-        <button id="startBtn">Start Scenario</button>
-        <button id="resetBtn" class="secondary">Reset</button>
+        <button id="startBtn" type="button">Start Scenario</button>
+        <button id="resetBtn" type="button" class="secondary">Reset</button>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Training Scenarios</h2>
+      <p class="hint">Choose a guided scenario to follow the taxi flow from ramp to runway and back.</p>
+      <div class="actions">
+        <button id="da40ScenarioBtn" type="button">DA40 Ramp → Runway → Ramp</button>
+        <button id="da20ScenarioBtn" type="button" class="secondary">DA20 Progressive Taxi</button>
+        <button id="nextStepBtn" type="button" class="secondary" disabled>Next Step</button>
       </div>
     </section>
 
@@ -67,6 +78,47 @@
       <p class="hint">Use the taxi options to move between ramp, intersections, and hold short points.</p>
     </section>
 
+    <section class="panel scene-panel">
+      <div class="scene-header">
+        <div>
+          <h2>Aircraft Perspective</h2>
+          <p class="hint">Use the cockpit view to practice head-up taxi scanning.</p>
+        </div>
+      </div>
+      <figure class="scene cockpit">
+        <img id="cockpitImage" src="assets/cockpit-da40.svg" alt="DA40 cockpit perspective" />
+        <figcaption id="cockpitCaption">DA40: verify taxi clearance, set lights, and check brakes.</figcaption>
+      </figure>
+    </section>
+
+    <section class="panel scene-panel">
+      <div class="scene-header">
+        <div>
+          <h2>Runway Environment View</h2>
+          <p class="hint">Switch environments to match your clearance and update your taxi plan.</p>
+        </div>
+        <div class="score-card">
+          <span>Safety Score</span>
+          <strong id="scoreDisplay">0</strong>
+        </div>
+      </div>
+      <div class="scene-grid">
+        <figure class="scene">
+          <img id="sceneImage" src="assets/scene-day.svg" alt="Daytime runway environment" />
+          <figcaption id="sceneCaption">Day VFR: high visibility, taxiway centerline clearly visible.</figcaption>
+        </figure>
+        <div class="briefing">
+          <h3>Taxi Briefing</h3>
+          <ol id="briefingList">
+            <li>Review the clearance and planned route.</li>
+            <li>Identify all hold short points and runway crossings.</li>
+            <li>Use signage to confirm your location at each intersection.</li>
+          </ol>
+          <div class="callouts" id="callouts"></div>
+        </div>
+      </div>
+    </section>
+
     <section class="panel" id="interactionPanel">
       <h2>Taxi Decision Log</h2>
       <div id="status" class="status">Select a scenario and start to begin taxiing.</div>
@@ -74,10 +126,17 @@
         <span>Current Location:</span>
         <strong id="locationDisplay">Ramp</strong>
       </div>
+      <div class="log">
+        <h3>ATC &amp; Crew Log</h3>
+        <ul id="logEntries"></ul>
+      </div>
       <div class="options" id="options"></div>
       <div class="sign-id">
         <p><strong>Sign Check:</strong> Identify the sign shown before crossing any runway or hold short line.</p>
-        <div id="signPrompt" class="sign">Sign will appear here.</div>
+        <div class="sign-display">
+          <img id="signImage" src="assets/sign-location.svg" alt="Taxiway sign" />
+          <div id="signPrompt" class="sign">Sign will appear here.</div>
+        </div>
         <div class="sign-actions" id="signActions"></div>
       </div>
     </section>
@@ -96,6 +155,6 @@
     <p>Practice scenario designed to align with CFI ACS AO 2 Task C objectives.</p>
   </footer>
 
-  <script src="app.js"></script>
+  <script src="app.js" defer></script>
 </body>
 </html>
